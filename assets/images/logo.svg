@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="200" height="100" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    .logo-text {
-      font-family: 'Arial', sans-serif;
-      font-size: 48px;
-      font-weight: 300;
-      letter-spacing: 2px;
-    }
-    .script-style {
-      font-style: italic;
-    }
-  </style>
-  <text x="50%" y="60%" text-anchor="middle" class="logo-text" fill="#000">
-    <tspan class="script-style">Lexel</tspan>
-  </text>
+<svg width="200" height="100" viewBox="0 0 200 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20,80 C20,40 20,20 60,20 L60,35 C35,35 35,45 35,80 Z" fill="#000"/>
+    <path d="M70,20 L85,20 L85,80 L70,80 Z" fill="#000"/>
+    <path d="M95,35 L110,20 L125,35 L110,50 L95,35 Z M110,50 L125,65 L110,80 L95,65 L110,50 Z" fill="#000"/>
+    <path d="M135,80 C135,40 135,20 175,20 L175,35 C150,35 150,45 150,80 Z" fill="#000"/>
 </svg> 
