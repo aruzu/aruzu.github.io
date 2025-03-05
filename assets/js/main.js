@@ -8,6 +8,7 @@ const contactForm = document.querySelector('#contactForm');
 const header = document.querySelector('.header');
 const serviceCards = document.querySelectorAll('.service-card');
 const featureBlocks = document.querySelectorAll('.feature-block');
+const scrollTopButton = document.querySelector('.scroll-top');
 
 // Mobile Menu Toggle
 menuToggle?.addEventListener('click', () => {
@@ -244,19 +245,25 @@ document.addEventListener('input', function(e) {
 });
 
 // Scroll to top button
-const scrollTopButton = document.querySelector('.scroll-top');
-
-window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-        scrollTopButton.classList.add('visible');
-    } else {
-        scrollTopButton.classList.remove('visible');
-    }
-});
-
-scrollTopButton.addEventListener('click', () => {
+scrollTopButton?.addEventListener('click', () => {
     window.scrollTo({
         top: 0,
         behavior: 'smooth'
     });
+});
+
+// Scroll behavior
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
+    
+    // Show/hide scroll to top button
+    if (window.scrollY > 300) {
+        scrollTopButton?.classList.add('visible');
+    } else {
+        scrollTopButton?.classList.remove('visible');
+    }
 }); 
