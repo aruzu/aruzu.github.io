@@ -1,10 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My GitHub Pages Site</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexel Group - Modern Solutions for Your Business</title>
+    <meta name="description" content="Lexel Group provides innovative business solutions and consulting services to help your company thrive in the modern market.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <h1>Welcome to my website!</h1>
-    <p>This is hosted on GitHub Pages.</p>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="/" class="logo">
+                <img src="assets/images/logo.svg" alt="Lexel Group Logo" class="logo-img">
+            </a>
+            
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#services">Services</a>
+                <a href="#contact" class="open-modal">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <h1 class="fade-in">Transform Your Business with Modern Solutions</h1>
+            <p class="subheadline fade-in">We help businesses adapt and thrive in the digital age</p>
+            <a href="#contact" class="btn btn-primary open-modal fade-in">Get Started</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">About Us</h2>
+            <div class="about-content">
+                <div class="about-text animate-on-scroll">
+                    <p>Lexel Group is a forward-thinking consulting firm dedicated to helping businesses navigate the complexities of modern markets. With our expertise in digital transformation and strategic planning, we empower organizations to achieve their full potential.</p>
+                    <p>Our team of experienced professionals brings together diverse skills and industry knowledge to deliver tailored solutions that drive growth and innovation.</p>
+                </div>
+                <div class="about-image animate-on-scroll">
+                    <img src="assets/images/about.svg" alt="About Lexel Group">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card animate-on-scroll">
+                    <img src="assets/images/strategy.svg" alt="Strategy" class="service-icon">
+                    <h3>Strategic Planning</h3>
+                    <p>Develop comprehensive business strategies aligned with your goals and market opportunities.</p>
+                </div>
+                <div class="service-card animate-on-scroll">
+                    <img src="assets/images/digital.svg" alt="Digital" class="service-icon">
+                    <h3>Digital Transformation</h3>
+                    <p>Modernize your operations with cutting-edge digital solutions and technologies.</p>
+                </div>
+                <div class="service-card animate-on-scroll">
+                    <img src="assets/images/consulting.svg" alt="Consulting" class="service-icon">
+                    <h3>Business Consulting</h3>
+                    <p>Expert guidance to optimize processes, reduce costs, and improve efficiency.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">Ready to Transform Your Business?</h2>
+            <p class="cta-text animate-on-scroll">Let's discuss how we can help you achieve your goals.</p>
+            <a href="#contact" class="btn btn-primary open-modal animate-on-scroll">Contact Us</a>
+        </div>
+    </section>
+
+    <!-- Contact Modal -->
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Contact Us</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <textarea name="message" placeholder="Your Message" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/images/logo-white.svg" alt="Lexel Group Logo">
+                    <p>Empowering businesses through modern solutions</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <a href="#about">About</a>
+                    <a href="#services">Services</a>
+                    <a href="#contact" class="open-modal">Contact</a>
+                </div>
+                <div class="footer-social">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#" target="_blank" rel="noopener noreferrer">
+                            <img src="assets/images/linkedin.svg" alt="LinkedIn">
+                        </a>
+                        <a href="#" target="_blank" rel="noopener noreferrer">
+                            <img src="assets/images/twitter.svg" alt="Twitter">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Lexel Group. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
 </body>
 </html>
