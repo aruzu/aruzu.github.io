@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="consultGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    <circle cx="30" cy="30" r="25" fill="none" stroke="url(#consultGrad)" stroke-width="1" opacity="0.2"/>
+    <circle cx="30" cy="30" r="20" fill="none" stroke="url(#consultGrad)" stroke-width="1" opacity="0.4"/>
+    <circle cx="30" cy="30" r="15" fill="none" stroke="url(#consultGrad)" stroke-width="1" opacity="0.6"/>
+    <path d="M25,20 L35,20 L35,40 L25,40 Z" fill="url(#consultGrad)" opacity="0.9"/>
+    <path d="M20,25 L40,25 L40,35 L20,35 Z" fill="url(#consultGrad)" opacity="0.7"/>
+    <circle cx="30" cy="30" r="3" fill="#1e293b"/>
+</svg> 

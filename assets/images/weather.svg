@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="weatherGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    <path d="M15,30 C15,25 19,20 25,20 C26,15 30,10 35,10 C40,10 45,15 45,20 C50,20 55,25 55,30 C55,35 50,40 45,40 L20,40 C15,40 10,35 10,30" fill="none" stroke="url(#weatherGrad)" stroke-width="2"/>
+    <circle cx="35" cy="15" r="2" fill="url(#weatherGrad)"/>
+    <path d="M20,45 L25,50 M30,45 L35,50 M40,45 L45,50" stroke="url(#weatherGrad)" stroke-width="2"/>
+    <path d="M25,25 L35,25 M30,22 L30,28" stroke="url(#weatherGrad)" stroke-width="2"/>
+</svg> 
