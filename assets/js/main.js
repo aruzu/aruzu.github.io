@@ -2,10 +2,12 @@
 const menuToggle = document.querySelector('.menu-toggle');
 const navLinks = document.querySelector('.nav-links');
 const modal = document.querySelector('.modal');
-const openModalBtn = document.querySelector('.open-modal');
+const openModalButtons = document.querySelectorAll('.open-modal');
 const closeModalBtn = document.querySelector('.close-modal');
 const contactForm = document.querySelector('#contactForm');
 const header = document.querySelector('.header');
+const serviceCards = document.querySelectorAll('.service-card');
+const featureBlocks = document.querySelectorAll('.feature-block');
 
 // Mobile Menu Toggle
 menuToggle?.addEventListener('click', () => {
@@ -21,10 +23,12 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Modal functionality
-openModalBtn?.addEventListener('click', () => {
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
+// Modal functionality - update to handle multiple buttons
+openModalButtons.forEach(button => {
+    button?.addEventListener('click', () => {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    });
 });
 
 closeModalBtn?.addEventListener('click', () => {
@@ -43,49 +47,99 @@ modal?.addEventListener('click', (e) => {
 contactForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     
+    if (!validateForm(contactForm)) {
+        return;
+    }
+    
     const formData = new FormData(contactForm);
     const data = Object.fromEntries(formData);
     
+    // Show loading state
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.textContent;
+    submitButton.textContent = 'Sending...';
+    submitButton.disabled = true;
+    
     try {
-        // Replace with your actual form submission endpoint
-        const response = await fetch('/api/contact', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
+        // Simulated form submission for demo purposes
+        await new Promise(resolve => setTimeout(resolve, 1500));
         
-        if (response.ok) {
-            alert('Message sent successfully!');
-            contactForm.reset();
+        // Success state
+        contactForm.innerHTML = `
+            <div class="success-message">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <h3>Message Sent!</h3>
+                <p>Thank you for contacting us. We'll get back to you shortly.</p>
+                <button type="button" class="btn btn-primary close-success">Close</button>
+            </div>
+        `;
+        
+        // Add event listener to the close button
+        document.querySelector('.close-success')?.addEventListener('click', () => {
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
-        } else {
-            throw new Error('Failed to send message');
-        }
+            // Reset form for next time
+            setTimeout(() => {
+                contactForm.innerHTML = `
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" placeholder="How can we help you?" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                `;
+            }, 500);
+        });
     } catch (error) {
+        submitButton.textContent = originalButtonText;
+        submitButton.disabled = false;
         alert('Failed to send message. Please try again later.');
         console.error('Error:', error);
     }
 });
 
-// Scroll animations
-const animateOnScroll = () => {
-    const elements = document.querySelectorAll('.animate-on-scroll');
-    
-    elements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const elementBottom = element.getBoundingClientRect().bottom;
-        
-        if (elementTop < window.innerHeight && elementBottom > 0) {
-            element.classList.add('visible');
-        }
-    });
+// Enhanced scroll animations with intersection observer
+const observerOptions = {
+    threshold: 0.15,
+    rootMargin: '0px 0px -50px 0px'
 };
 
-window.addEventListener('scroll', animateOnScroll);
-window.addEventListener('load', animateOnScroll);
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            
+            // Add staggered animation for service cards and feature blocks
+            if (entry.target.classList.contains('service-card') || 
+                entry.target.classList.contains('feature-block')) {
+                const index = Array.from(entry.target.parentNode.children).indexOf(entry.target);
+                entry.target.style.animationDelay = `${index * 0.1}s`;
+            }
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.animate-on-scroll').forEach(el => {
+    observer.observe(el);
+});
+
+// Service card hover effects
+serviceCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-8px)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0)';
+    });
+});
 
 // Header scroll behavior
 let lastScroll = 0;
@@ -109,67 +163,27 @@ window.addEventListener('scroll', () => {
     lastScroll = currentScroll;
 });
 
-// DOM Elements
-document.addEventListener('DOMContentLoaded', () => {
-    initializeApp();
-});
-
-// Initialize all functionality
-function initializeApp() {
-    setupMobileMenu();
-    setupScrollAnimations();
-    setupSmoothScroll();
-}
-
-// Mobile Menu Toggle
-function setupMobileMenu() {
-    const menuButton = document.querySelector('.menu-toggle');
-    const mobileMenu = document.querySelector('.mobile-menu');
-
-    if (menuButton && mobileMenu) {
-        menuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('active');
-            menuButton.classList.toggle('active');
-        });
-    }
-}
-
-// Scroll Animations
-function setupScrollAnimations() {
-    const animatedElements = document.querySelectorAll('.animate-on-scroll');
-    
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    animatedElements.forEach(element => observer.observe(element));
-}
-
 // Smooth Scroll for anchor links
-function setupSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        e.preventDefault();
+        const target = document.querySelector(targetId);
+        if (target) {
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
             }
-        });
+            
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
     });
-}
+});
 
 // Form Validation
 function validateForm(formElement) {
@@ -177,6 +191,13 @@ function validateForm(formElement) {
     let isValid = true;
 
     inputs.forEach(input => {
+        // Remove any existing error messages first
+        const existingError = input.parentNode.querySelector('.error-message');
+        if (existingError) {
+            existingError.remove();
+        }
+        input.classList.remove('error');
+        
         if (input.hasAttribute('required') && !input.value.trim()) {
             isValid = false;
             showError(input, 'This field is required');
@@ -198,26 +219,44 @@ function isValidEmail(email) {
 }
 
 function showError(input, message) {
-    const errorDiv = input.nextElementSibling?.classList.contains('error-message') 
-        ? input.nextElementSibling 
-        : document.createElement('div');
-    
-    if (!input.nextElementSibling?.classList.contains('error-message')) {
-        errorDiv.classList.add('error-message');
-        input.parentNode.insertBefore(errorDiv, input.nextSibling);
-    }
-    
+    const errorDiv = document.createElement('div');
+    errorDiv.classList.add('error-message');
     errorDiv.textContent = message;
+    
     input.classList.add('error');
+    input.parentNode.appendChild(errorDiv);
 }
+
+// Initialize on DOM load
+document.addEventListener('DOMContentLoaded', () => {
+    // Add any initialization code here
+});
 
 // Remove error when user starts typing
 document.addEventListener('input', function(e) {
     if (e.target.classList.contains('error')) {
         e.target.classList.remove('error');
-        const errorMessage = e.target.nextElementSibling;
-        if (errorMessage?.classList.contains('error-message')) {
+        const errorMessage = e.target.parentNode.querySelector('.error-message');
+        if (errorMessage) {
             errorMessage.remove();
         }
     }
+});
+
+// Scroll to top button
+const scrollTopButton = document.querySelector('.scroll-top');
+
+window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+        scrollTopButton.classList.add('visible');
+    } else {
+        scrollTopButton.classList.remove('visible');
+    }
+});
+
+scrollTopButton.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 }); 
