@@ -1,2 +1,0 @@
-conda create --name website python=3.9
-conda activate website
