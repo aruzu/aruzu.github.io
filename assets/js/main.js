@@ -32,19 +32,22 @@ modalTriggers.forEach(trigger => {
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
         
-        // Ensure modal is centered
+        // Position modal at 25% from the top
         setTimeout(() => {
             const viewportHeight = window.innerHeight;
             const modalHeight = modalContent.offsetHeight;
             
-            if (modalHeight > viewportHeight * 0.9) {
-                modalContent.style.top = '5vh';
-                modalContent.style.transform = 'none';
-                modalContent.style.height = '90vh';
+            // Always position at 25% from top
+            modalContent.style.top = '25vh';
+            modalContent.style.transform = 'none';
+            
+            // Adjust height if modal is too tall
+            if (modalHeight > viewportHeight * 0.7) {
+                modalContent.style.height = '70vh';
+                modalContent.style.overflowY = 'auto';
             } else {
-                modalContent.style.top = '50%';
-                modalContent.style.transform = 'translateY(-50%)';
                 modalContent.style.height = 'auto';
+                modalContent.style.overflowY = 'visible';
             }
         }, 10);
     });
