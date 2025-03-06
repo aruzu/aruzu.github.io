@@ -2,9 +2,10 @@
 const menuToggle = document.querySelector('.menu-toggle');
 const navLinks = document.querySelector('.nav-links');
 const modal = document.querySelector('.modal');
-const openModalButtons = document.querySelectorAll('.open-modal');
-const closeModalBtn = document.querySelector('.close-modal');
-const contactForm = document.querySelector('#contactForm');
+const modalContent = document.querySelector('.modal-content');
+const modalTriggers = document.querySelectorAll('.open-modal');
+const closeModal = document.querySelector('.close-modal');
+const contactForm = document.getElementById('contactForm');
 const header = document.querySelector('.header');
 const serviceCards = document.querySelectorAll('.service-card');
 const featureBlocks = document.querySelectorAll('.feature-block');
@@ -25,14 +26,31 @@ document.addEventListener('click', (e) => {
 });
 
 // Modal functionality - update to handle multiple buttons
-openModalButtons.forEach(button => {
-    button?.addEventListener('click', () => {
-        modal.style.display = 'block';
+modalTriggers.forEach(trigger => {
+    trigger?.addEventListener('click', (e) => {
+        e.preventDefault();
+        modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        
+        // Ensure modal is centered
+        setTimeout(() => {
+            const viewportHeight = window.innerHeight;
+            const modalHeight = modalContent.offsetHeight;
+            
+            if (modalHeight > viewportHeight * 0.9) {
+                modalContent.style.top = '5vh';
+                modalContent.style.transform = 'none';
+                modalContent.style.height = '90vh';
+            } else {
+                modalContent.style.top = '50%';
+                modalContent.style.transform = 'translateY(-50%)';
+                modalContent.style.height = 'auto';
+            }
+        }, 10);
     });
 });
 
-closeModalBtn?.addEventListener('click', () => {
+closeModal?.addEventListener('click', () => {
     modal.style.display = 'none';
     document.body.style.overflow = 'auto';
 });
@@ -265,5 +283,16 @@ window.addEventListener('scroll', () => {
         scrollTopButton?.classList.add('visible');
     } else {
         scrollTopButton?.classList.remove('visible');
+    }
+});
+
+// Adjust modal on window resize
+window.addEventListener('resize', function() {
+    if (modal && modal.style.display === 'flex') {
+        // Ensure modal is properly sized for the viewport
+        const viewportWidth = window.innerWidth;
+        if (viewportWidth < 640) {
+            modalContent.style.width = '100%';
+        }
     }
 }); 
