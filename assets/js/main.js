@@ -67,14 +67,12 @@ modal?.addEventListener('click', (e) => {
 
 // Form submission
 contactForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    // Don't prevent default form submission - let Formspree handle it
     
     if (!validateForm(contactForm)) {
+        e.preventDefault();
         return;
     }
-    
-    const formData = new FormData(contactForm);
-    const data = Object.fromEntries(formData);
     
     // Show loading state
     const submitButton = contactForm.querySelector('button[type="submit"]');
@@ -82,11 +80,29 @@ contactForm?.addEventListener('submit', async (e) => {
     submitButton.textContent = 'Sending...';
     submitButton.disabled = true;
     
-    try {
-        // Simulated form submission for demo purposes
-        await new Promise(resolve => setTimeout(resolve, 1500));
+    // The form will be submitted to Formspree
+    // We'll handle the success/error states when the page returns from Formspree
+    // This is just for UX while the form is submitting
+    
+    // Add a hidden field with the current page URL so Formspree can redirect back
+    if (!contactForm.querySelector('input[name="_next"]')) {
+        const nextInput = document.createElement('input');
+        nextInput.type = 'hidden';
+        nextInput.name = '_next';
+        nextInput.value = window.location.href;
+        contactForm.appendChild(nextInput);
+    }
+});
+
+// Handle form submission response (this will run when redirected back from Formspree)
+document.addEventListener('DOMContentLoaded', () => {
+    // Check if we've been redirected back from Formspree
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('submitted')) {
+        // Show success message
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
         
-        // Success state
         contactForm.innerHTML = `
             <div class="success-message">
                 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -110,20 +126,20 @@ contactForm?.addEventListener('submit', async (e) => {
                         <input type="text" name="name" placeholder="Your Name" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" name="email" placeholder="Your Email" required>
+                        <input type="email" name="_replyto" placeholder="Your Email" required>
                     </div>
                     <div class="form-group">
                         <textarea name="message" placeholder="How can we help you?" required></textarea>
                     </div>
+                    <input type="hidden" name="_subject" value="New Contact Form Submission from Lexel Group Website">
+                    <input type="text" name="_gotcha" style="display:none">
                     <button type="submit" class="btn btn-primary">Send Message</button>
                 `;
             }, 500);
         });
-    } catch (error) {
-        submitButton.textContent = originalButtonText;
-        submitButton.disabled = false;
-        alert('Failed to send message. Please try again later.');
-        console.error('Error:', error);
+        
+        // Remove the query parameter from the URL
+        window.history.replaceState({}, document.title, window.location.pathname);
     }
 });
 
