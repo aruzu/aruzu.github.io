@@ -82,16 +82,14 @@ contactForm?.addEventListener('submit', async (e) => {
     // Get form data
     const formData = new FormData(contactForm);
     
-    try {
-        // Submit the form using fetch API
-        const response = await fetch(contactForm.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-        
+    // Submit the form using fetch API with Formspree's recommended pattern
+    fetch(contactForm.action, {
+        method: contactForm.method,
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    }).then(response => {
         if (response.ok) {
             // Success state
             contactForm.innerHTML = `
@@ -130,15 +128,22 @@ contactForm?.addEventListener('submit', async (e) => {
             });
         } else {
             // Handle error response
-            const data = await response.json();
-            throw new Error(data.error || 'Form submission failed');
+            response.json().then(data => {
+                if (Object.hasOwn(data, 'errors')) {
+                    alert(data["errors"].map(error => error["message"]).join(", "));
+                } else {
+                    alert("Oops! There was a problem submitting your form");
+                }
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            });
         }
-    } catch (error) {
+    }).catch(error => {
+        alert("Oops! There was a problem submitting your form");
+        console.error('Error:', error);
         submitButton.textContent = originalButtonText;
         submitButton.disabled = false;
-        alert('Failed to send message. Please try again later.');
-        console.error('Error:', error);
-    }
+    });
 });
 
 // Enhanced scroll animations with intersection observer
