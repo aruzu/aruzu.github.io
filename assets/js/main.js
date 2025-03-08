@@ -67,10 +67,9 @@ modal?.addEventListener('click', (e) => {
 
 // Form submission
 contactForm?.addEventListener('submit', async (e) => {
-    // Don't prevent default form submission - let Formspree handle it
+    e.preventDefault();
     
     if (!validateForm(contactForm)) {
-        e.preventDefault();
         return;
     }
     
@@ -80,66 +79,65 @@ contactForm?.addEventListener('submit', async (e) => {
     submitButton.textContent = 'Sending...';
     submitButton.disabled = true;
     
-    // The form will be submitted to Formspree
-    // We'll handle the success/error states when the page returns from Formspree
-    // This is just for UX while the form is submitting
+    // Get form data
+    const formData = new FormData(contactForm);
     
-    // Add a hidden field with the current page URL so Formspree can redirect back
-    if (!contactForm.querySelector('input[name="_next"]')) {
-        const nextInput = document.createElement('input');
-        nextInput.type = 'hidden';
-        nextInput.name = '_next';
-        nextInput.value = window.location.href;
-        contactForm.appendChild(nextInput);
-    }
-});
-
-// Handle form submission response (this will run when redirected back from Formspree)
-document.addEventListener('DOMContentLoaded', () => {
-    // Check if we've been redirected back from Formspree
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('submitted')) {
-        // Show success message
-        modal.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        
-        contactForm.innerHTML = `
-            <div class="success-message">
-                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                </svg>
-                <h3>Message Sent!</h3>
-                <p>Thank you for contacting us. We'll get back to you shortly.</p>
-                <button type="button" class="btn btn-primary close-success">Close</button>
-            </div>
-        `;
-        
-        // Add event listener to the close button
-        document.querySelector('.close-success')?.addEventListener('click', () => {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            // Reset form for next time
-            setTimeout(() => {
-                contactForm.innerHTML = `
-                    <div class="form-group">
-                        <input type="text" name="name" placeholder="Your Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" name="email" placeholder="Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea name="message" placeholder="How can we help you?" required></textarea>
-                    </div>
-                    <input type="hidden" name="_subject" value="New Contact Form Submission from Lexel Group Website">
-                    <input type="text" name="_gotcha" style="display:none">
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                `;
-            }, 500);
+    try {
+        // Submit the form using fetch API
+        const response = await fetch(contactForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
         });
         
-        // Remove the query parameter from the URL
-        window.history.replaceState({}, document.title, window.location.pathname);
+        if (response.ok) {
+            // Success state
+            contactForm.innerHTML = `
+                <div class="success-message">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <h3>Message Sent!</h3>
+                    <p>Thank you for contacting us. We'll get back to you shortly.</p>
+                    <button type="button" class="btn btn-primary close-success">Close</button>
+                </div>
+            `;
+            
+            // Add event listener to the close button
+            document.querySelector('.close-success')?.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                // Reset form for next time
+                setTimeout(() => {
+                    contactForm.innerHTML = `
+                        <div class="form-group">
+                            <input type="text" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="message" placeholder="How can we help you?" required></textarea>
+                        </div>
+                        <input type="hidden" name="_subject" value="New Contact Form Submission from Lexel Group Website">
+                        <input type="text" name="_gotcha" style="display:none">
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    `;
+                }, 500);
+            });
+        } else {
+            // Handle error response
+            const data = await response.json();
+            throw new Error(data.error || 'Form submission failed');
+        }
+    } catch (error) {
+        submitButton.textContent = originalButtonText;
+        submitButton.disabled = false;
+        alert('Failed to send message. Please try again later.');
+        console.error('Error:', error);
     }
 });
 
