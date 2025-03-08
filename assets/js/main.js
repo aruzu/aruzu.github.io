@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <input type="text" name="name" placeholder="Your Name" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" name="_replyto" placeholder="Your Email" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
                     </div>
                     <div class="form-group">
                         <textarea name="message" placeholder="How can we help you?" required></textarea>
